@@ -1,0 +1,2 @@
+curl -d "dataCadastroBem=2019-12-12&descricaoBem=Cadeira Giratória&valorBem=5000.00&numeroAtualBem=023346&numeroAntigoBem=012346&observaçõesBem=Recepção&qtdACadastrarBem=1&idUsuario=1&idFundo=1&idTipoBem=1&idSubElemento=2&idClassificacao=1&idEstadoBem=1&idEmpresa=1&idResponsavel=1&idOrigem=2&idDestino=2&idSubDestino=1&idContaContabil=1&idTipoAquisicao=1&idTipoIncorporacao=1" -H "application/x-www-form-urlencoded" http://10.4.6.52:3022/salvarCadastro
+
