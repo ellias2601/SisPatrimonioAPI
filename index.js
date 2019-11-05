@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();         
 const bodyParser = require('body-parser');
-const port = 3022; //porta padrão
+const port = 3023; //porta padrão
 const mysql = require('mysql');
 
 	
@@ -143,10 +143,6 @@ router.get('/tiposincorporacao', (req, res) =>{
     execSQLQuery('SELECT TipoIncorporacao.idTipoIncorporacao, TipoIncorporacao.descricaoTipoIncorporacao FROM TipoIncorporacao', res);
 })
 
-
-
-
-
 	
 router.post('/salvarCadastro', (req, res) =>{
 
@@ -155,7 +151,7 @@ router.post('/salvarCadastro', (req, res) =>{
     const valorBem = req.body.valorBem;
     const numeroAtualBem = req.body.numeroAtualBem;
     const numeroAntigoBem = req.body.numeroAntigoBem;
-    const observacoesBem = req.body.observacoesBem;
+    const observacoesBem = req.body.observaçõesBem;
     const qtdACadastrarBem = req.body.qtdACadastrarBem;
     const idUsuario = req.body.idUsuario;
     const idFundo = req.body.idFundo;
@@ -172,13 +168,26 @@ router.post('/salvarCadastro', (req, res) =>{
     const idTipoAquisicao = req.body.idTipoAquisicao;
     const idTipoIncorporacao = req.body.idTipoIncorporacao;
     
-    execSQLQuery(`INSERT INTO Bem(dataCadastroBem, descricaoBem, valorBem, numeroAtualBem, numeroAntigoBem, observaçõesBem, qtdACadastrarBem, idUsuario, idFundo,
+         execSQLQuery(`INSERT INTO Bem(dataCadastroBem, descricaoBem, valorBem, numeroAtualBem, numeroAntigoBem, observaçõesBem, qtdACadastrarBem, idUsuario, idFundo,
                                   idTipoBem,idSubElemento, idClassificacao, idEstadoBem, idEmpresa, idResponsavel, idOrigem, idDestino, idSubDestino, idContaContabil,    					  idTipoAquisicao, idTipoIncorporacao) 
                                   VALUES('${dataCadastroBem}','${descricaoBem}','${valorBem}', '${numeroAtualBem}', '${numeroAntigoBem}', '${observacoesBem}',
                                          '${qtdACadastrarBem}', '${idUsuario}', '${idFundo}', '${idTipoBem}', '${idSubElemento}', '${idClassificacao}', 
                                          '${idEstadoBem}', '${idEmpresa}', '${idResponsavel}', '${idOrigem}', '${idDestino}', '${idSubDestino}', '${idContaContabil}',
                                          '${idTipoAquisicao}', '${idTipoIncorporacao}' )`, res);
 });
+
+
+router.get('/consultaPorNumeroPatrimonio/:numeroAtualBem?', (req, res) =>{
+    
+    let filter = '';
+
+    if(req.params.numeroAtualBem) 
+  
+       filter = ' WHERE Bem.numeroAtualBem=' + parseInt(req.params.numeroAtualBem);
+
+       execSQLQuery('SELECT Bem.dataCadastroBem, Bem.descricaoBem, Bem.valorBem, Bem.numeroAtualBem, Bem.numeroAntigoBem, Bem.observaçõesBem, Fundo.nomeFundo,   		                    TipoBem.nomeTipoBem, SubElemento.descricaoSubElemento, Classificacao.nomeClassificacao, EstadoBem.nomeEstadoBem, Empresa.nomeFantEmpresa,    	                     Responsavel.nomeResponsavel, Responsavel.sobrenomeResponsavel, Origem.descricaoOrigem, Destino.nomeDestino, SubDestino.nomeSubDestino,   		                    ContaContabil.descricaoContaContabil, TipoAquisicao.descricaoTipoAquisicao, TipoIncorporacao.descricaoTipoIncorporacao  FROM Bem  INNER JOIN  				    Fundo ON Fundo.idFundo = Bem.idFundo INNER JOIN TipoBem ON TipoBem.idTipoBem = Bem.idTipoBem  INNER JOIN SubElemento ON 				    SubElemento.idSubElemento = Bem.idSubElemento INNER JOIN Classificacao ON Classificacao.idClassificacao = Bem.idClassificacao  INNER JOIN 				    EstadoBem ON EstadoBem.idEstadoBem = Bem.idEstadoBem  INNER JOIN Empresa ON Empresa.idEmpresa = Bem.idEmpresa INNER JOIN Responsavel ON 				    Responsavel.idResponsavel = Bem.idResponsavel INNER JOIN Origem ON Origem.idOrigem = Bem.idOrigem INNER JOIN Destino ON Destino.idDestino = 			    Bem.idDestino  INNER JOIN SubDestino ON SubDestino.idSubDestino = Bem.idSubDestino INNER JOIN ContaContabil  ON ContaContabil.idContaContabil = 				    Bem.idContaContabil INNER JOIN TipoAquisicao ON TipoAquisicao.idTipoAquisicao = Bem.idTipoAquisicao  INNER JOIN TipoIncorporacao ON 			    TipoIncorporacao.idTipoIncorporacao = Bem.idTipoIncorporacao' + filter, res);
+   
+})
 
 
 	
