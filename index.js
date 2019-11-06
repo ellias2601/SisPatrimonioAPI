@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();         
 const bodyParser = require('body-parser');
-const port = 3023; //porta padrão
+const port = 3009; //porta padrão
 const mysql = require('mysql');
 
 	
@@ -12,13 +12,15 @@ app.use(bodyParser.json());
 	
 //definindo as rotas
 const router = express.Router();
-router.get('/', (req, res) => res.json({ message: 'Funcionando!' }));
+router.get('/', (req, res) => res.json({ Title: 'SisPatrAPI', version: '1.0.1' }));
 app.use('/', router);
 
 	
 //inicia o servidor
 app.listen(port);
 console.log('API funcionando!');
+
+
 
 	
 function execSQLQuery(sqlQry, res){
@@ -41,9 +43,24 @@ function execSQLQuery(sqlQry, res){
   });
 }
 
+
+router.get('/login/:cpfUsuario?/:senhaUsuario?', (req, res) =>{
+    
+    let filter = '';
+
+    if(req.params.cpfUsuario && req.params.senhaUsuario) 
+  
+       filter = ' WHERE Usuario.cpfUsuario=' + req.params.cpfUsuario + ' and Usuario.senhaUsuario=' + req.params.senhaUsuario;
+
+       execSQLQuery('SELECT Usuario.nomeUsuario, Usuario.permUsuario FROM Usuario' + filter, res);
+       
+       
+})
+
 	
 router.get('/fundos', (req, res) =>{
-    execSQLQuery('SELECT Fundo.idFundo, Fundo.siglaFundo, Fundo.nomeFundo FROM Fundo', res);
+    
+      execSQLQuery('SELECT Fundo.idFundo, Fundo.siglaFundo, Fundo.nomeFundo FROM Fundo', res);
 })
 
 
