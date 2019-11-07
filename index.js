@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();         
 const bodyParser = require('body-parser');
-const port = 3009; //porta padrão
+const port = 3000; //porta padrão
 const mysql = require('mysql');
 
 	
@@ -184,13 +184,14 @@ router.post('/salvarCadastro', (req, res) =>{
     const idContaContabil = req.body.idContaContabil;
     const idTipoAquisicao = req.body.idTipoAquisicao;
     const idTipoIncorporacao = req.body.idTipoIncorporacao;
+    const idSecretaria = req.body.idSecretaria;
     
          execSQLQuery(`INSERT INTO Bem(dataCadastroBem, descricaoBem, valorBem, numeroAtualBem, numeroAntigoBem, observaçõesBem, qtdACadastrarBem, idUsuario, idFundo,
-                                  idTipoBem,idSubElemento, idClassificacao, idEstadoBem, idEmpresa, idResponsavel, idOrigem, idDestino, idSubDestino, idContaContabil,    					  idTipoAquisicao, idTipoIncorporacao) 
+                                  idTipoBem,idSubElemento, idClassificacao, idEstadoBem, idEmpresa, idResponsavel, idOrigem, idDestino, idSubDestino, idContaContabil,    					  idTipoAquisicao, idTipoIncorporacao,idSecretaria) 
                                   VALUES('${dataCadastroBem}','${descricaoBem}','${valorBem}', '${numeroAtualBem}', '${numeroAntigoBem}', '${observacoesBem}',
                                          '${qtdACadastrarBem}', '${idUsuario}', '${idFundo}', '${idTipoBem}', '${idSubElemento}', '${idClassificacao}', 
                                          '${idEstadoBem}', '${idEmpresa}', '${idResponsavel}', '${idOrigem}', '${idDestino}', '${idSubDestino}', '${idContaContabil}',
-                                         '${idTipoAquisicao}', '${idTipoIncorporacao}' )`, res);
+                                         '${idTipoAquisicao}', '${idTipoIncorporacao}', '${idSecretaria}')`, res);
 });
 
 
@@ -202,7 +203,7 @@ router.get('/consultaPorNumeroPatrimonio/:numeroAtualBem?', (req, res) =>{
   
        filter = ' WHERE Bem.numeroAtualBem=' + parseInt(req.params.numeroAtualBem);
 
-       execSQLQuery('SELECT Bem.dataCadastroBem, Bem.descricaoBem, Bem.valorBem, Bem.numeroAtualBem, Bem.numeroAntigoBem, Bem.observaçõesBem, Fundo.nomeFundo,   		                    TipoBem.nomeTipoBem, SubElemento.descricaoSubElemento, Classificacao.nomeClassificacao, EstadoBem.nomeEstadoBem, Empresa.nomeFantEmpresa,    	                     Responsavel.nomeResponsavel, Responsavel.sobrenomeResponsavel, Origem.descricaoOrigem, Destino.nomeDestino, SubDestino.nomeSubDestino,   		                    ContaContabil.descricaoContaContabil, TipoAquisicao.descricaoTipoAquisicao, TipoIncorporacao.descricaoTipoIncorporacao  FROM Bem  INNER JOIN  				    Fundo ON Fundo.idFundo = Bem.idFundo INNER JOIN TipoBem ON TipoBem.idTipoBem = Bem.idTipoBem  INNER JOIN SubElemento ON 				    SubElemento.idSubElemento = Bem.idSubElemento INNER JOIN Classificacao ON Classificacao.idClassificacao = Bem.idClassificacao  INNER JOIN 				    EstadoBem ON EstadoBem.idEstadoBem = Bem.idEstadoBem  INNER JOIN Empresa ON Empresa.idEmpresa = Bem.idEmpresa INNER JOIN Responsavel ON 				    Responsavel.idResponsavel = Bem.idResponsavel INNER JOIN Origem ON Origem.idOrigem = Bem.idOrigem INNER JOIN Destino ON Destino.idDestino = 			    Bem.idDestino  INNER JOIN SubDestino ON SubDestino.idSubDestino = Bem.idSubDestino INNER JOIN ContaContabil  ON ContaContabil.idContaContabil = 				    Bem.idContaContabil INNER JOIN TipoAquisicao ON TipoAquisicao.idTipoAquisicao = Bem.idTipoAquisicao  INNER JOIN TipoIncorporacao ON 			    TipoIncorporacao.idTipoIncorporacao = Bem.idTipoIncorporacao' + filter, res);
+       execSQLQuery('SELECT Bem.dataCadastroBem, Bem.descricaoBem, Bem.valorBem, Bem.numeroAtualBem, Bem.numeroAntigoBem, Bem.observaçõesBem, Fundo.nomeFundo,   		                    TipoBem.nomeTipoBem, SubElemento.descricaoSubElemento, Classificacao.nomeClassificacao, EstadoBem.nomeEstadoBem, Empresa.nomeFantEmpresa,    	                     Responsavel.nomeResponsavel, Responsavel.sobrenomeResponsavel, Origem.descricaoOrigem, Destino.nomeDestino, SubDestino.nomeSubDestino,   		                    ContaContabil.descricaoContaContabil, TipoAquisicao.descricaoTipoAquisicao, TipoIncorporacao.descricaoTipoIncorporacao,  				    Secretaria.descricaoSecretaria  FROM Bem  INNER JOIN Fundo ON Fundo.idFundo = Bem.idFundo INNER JOIN TipoBem ON TipoBem.idTipoBem =    				    Bem.idTipoBem  INNER JOIN SubElemento ON SubElemento.idSubElemento = Bem.idSubElemento INNER JOIN Classificacao ON Classificacao.idClassificacao 		                    = Bem.idClassificacao  INNER JOIN EstadoBem ON EstadoBem.idEstadoBem = Bem.idEstadoBem  INNER JOIN Empresa ON Empresa.idEmpresa = Bem.idEmpresa 		                    INNER JOIN Responsavel ON Responsavel.idResponsavel = Bem.idResponsavel INNER JOIN Origem ON Origem.idOrigem = Bem.idOrigem INNER JOIN Destino 				    ON Destino.idDestino = Bem.idDestino  INNER JOIN SubDestino ON SubDestino.idSubDestino = Bem.idSubDestino INNER JOIN ContaContabil  ON 				    ContaContabil.idContaContabil =  Bem.idContaContabil INNER JOIN TipoAquisicao ON TipoAquisicao.idTipoAquisicao = Bem.idTipoAquisicao  INNER JOIN 				    TipoIncorporacao ON TipoIncorporacao.idTipoIncorporacao = Bem.idTipoIncorporacao INNER JOIN Secretaria ON Secretaria.idSecretaria = 		            Bem.idSecretaria' + filter, res);
    
 })
 
