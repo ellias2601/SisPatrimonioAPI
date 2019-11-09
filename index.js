@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();         
 const bodyParser = require('body-parser');
-const port = 3006; //porta padrão
+const port = 3011; //porta padrão
 const mysql = require('mysql');
 
 	
@@ -162,6 +162,8 @@ router.get('/tiposincorporacao', (req, res) =>{
 
 	
 router.post('/salvarCadastro', (req, res) =>{
+
+    console.log(req.body);
 
     const dataCadastroBem = req.body.dataCadastroBem;
     const descricaoBem = req.body.descricaoBem;
