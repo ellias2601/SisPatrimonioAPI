@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();         
 const bodyParser = require('body-parser');
-const port = 3006; //porta padrão
+const port = 3000; //porta padrão
 const mysql = require('mysql');
 
 	
@@ -102,39 +102,39 @@ router.get('/secretariasPorFundo/:idFundo?', (req, res) =>{
 })
 
 
-router.get('/origensPorFundo/:idFundo?', (req, res) =>{
+router.get('/origensPorFundoESecretaria/:idFundo?/:idSecretaria?', (req, res) =>{
     
     let filter = '';
 
-    if(req.params.idFundo) 
+    if(req.params.idFundo && req.params.idSecretaria) 
   
-       filter = ' WHERE Fundo.idFundo=' + parseInt(req.params.idFundo);
+       filter = ' WHERE Fundo.idFundo=' + parseInt(req.params.idFundo) + ' and Secretaria.idSecretaria=' + parseInt(req.params.idSecretaria);
 
        execSQLQuery('SELECT Origem.idOrigem, Origem.descricaoOrigem FROM Fundo INNER JOIN Secretaria ON Fundo.idFundo = Secretaria.idFundo INNER JOIN Origem         			     ON Secretaria.idSecretaria = Origem.idSecretaria' + filter, res);
    
 })
 
 
-router.get('/destinosPorFundo/:idFundo?', (req, res) =>{
+router.get('/destinosPorFundoSecretariaEOrigem/:idFundo?/:idSecretaria?/:idOrigem?', (req, res) =>{
     
     let filter = '';
 
-    if(req.params.idFundo) 
+    if(req.params.idFundo && req.params.idSecretaria && req.params.idOrigem) 
   
-       filter = ' WHERE Fundo.idFundo=' + parseInt(req.params.idFundo);
+       filter = ' WHERE Fundo.idFundo=' + parseInt(req.params.idFundo) + ' and Secretaria.idSecretaria=' + parseInt(req.params.idSecretaria) + ' and Destino.idOrigem=' +   			parseInt(req.params.idOrigem) ;
 
        execSQLQuery('SELECT Destino.idDestino, Destino.nomeDestino FROM Fundo INNER JOIN Secretaria  ON Fundo.idFundo = Secretaria.idFundo INNER JOIN Origem ON      		             Secretaria.idSecretaria = Origem.idSecretaria  INNER JOIN Destino ON Origem.idOrigem = Destino.idOrigem' + filter, res);
    
 })
 
 
-router.get('/subDestinosPorFundo/:idFundo?', (req, res) =>{
+router.get('/subDestinosPorFundoSecretariaOrigemEDestino/:idFundo?/:idSecretaria?/:idOrigem?/:idDestino?', (req, res) =>{
     
     let filter = '';
 
-    if(req.params.idFundo) 
+    if(req.params.idFundo && req.params.idSecretaria && req.params.idOrigem && req.params.idDestino) 
   
-       filter = ' WHERE Fundo.idFundo=' + parseInt(req.params.idFundo);
+       filter = ' WHERE Fundo.idFundo=' + parseInt(req.params.idFundo) + ' and Secretaria.idSecretaria=' + parseInt(req.params.idSecretaria) + ' and Destino.idOrigem=' +   			parseInt(req.params.idOrigem) + ' and SubDestino.idDestino=' + parseInt(req.params.idDestino);
 
        execSQLQuery('SELECT SubDestino.idSubDestino, SubDestino.nomeSubDestino FROM Fundo INNER JOIN Secretaria  ON Fundo.idFundo = Secretaria.idFundo  INNER JOIN Origem   			     ON Secretaria.idSecretaria = Origem.idSecretaria INNER JOIN Destino ON Origem.idOrigem = Destino.idOrigem INNER JOIN SubDestino ON Destino.idDestino = 			     SubDestino.idDestino' + filter, res);
    
