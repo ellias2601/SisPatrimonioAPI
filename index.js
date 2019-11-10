@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();         
 const bodyParser = require('body-parser');
-const port = 3011; //porta padrão
+const port = 3000; //porta padrão
 const mysql = require('mysql');
 
 	
@@ -194,6 +194,7 @@ router.post('/salvarCadastro', (req, res) =>{
                                          '${qtdACadastrarBem}', '${idUsuario}', '${idFundo}', '${idTipoBem}', '${idSubElemento}', '${idClassificacao}', 
                                          '${idEstadoBem}', '${idEmpresa}', '${idResponsavel}', '${idOrigem}', '${idDestino}', '${idSubDestino}', '${idContaContabil}',
                                          '${idTipoAquisicao}', '${idTipoIncorporacao}', '${idSecretaria}')`, res);
+
 });
 
 
