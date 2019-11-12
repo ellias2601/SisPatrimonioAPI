@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();         
 const bodyParser = require('body-parser');
-const port = 3000; //porta padrão
+const port = 3004; //porta padrão
 const mysql = require('mysql');
 
 	
@@ -48,11 +48,13 @@ router.get('/login/:cpfUsuario?/:senhaUsuario?', (req, res) =>{
     
     let filter = '';
 
+
     if(req.params.cpfUsuario && req.params.senhaUsuario) 
   
        filter = ' WHERE Usuario.cpfUsuario=' + req.params.cpfUsuario + ' and Usuario.senhaUsuario=' + req.params.senhaUsuario;
 
-       execSQLQuery('SELECT Usuario.nomeUsuario, Usuario.permUsuario FROM Usuario' + filter, res);
+       execSQLQuery('SELECT Usuario.idUsuario, Usuario.nomeUsuario, Usuario.permUsuario FROM Usuario' + filter, res);
+       
        
        
 })
